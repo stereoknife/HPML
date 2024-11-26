@@ -1,12 +1,14 @@
+using System.Runtime.CompilerServices;
 using Unity.Mathematics;
 using static Unity.Mathematics.math;
 using float3 = Unity.Mathematics.float3;
 
 namespace HPML.lib
 {
-    public abstract partial class scalar
+    public static partial class scalar
     {
-        bool moller_trumbore(float3 origin, float3 direction, float3x3 triangle, out float t)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool moller_trumbore(float3 origin, float3 direction, float3x3 triangle, out float t)
         {
             float3 edge1 = triangle.c1 - triangle.c0;
             float3 edge2 = triangle.c2 - triangle.c0;
@@ -37,14 +39,16 @@ namespace HPML.lib
             return true;
         }
 
-        bool raycast(float3 origin, float3 direction, float3x3 triangle, out float t, out float3 intersection)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool raycast(float3 origin, float3 direction, float3x3 triangle, out float t, out float3 intersection)
         {
             var mt = moller_trumbore(origin, direction, triangle, out t);
             intersection = origin + direction * t;
             return mt && t > 0f;
         }
         
-        bool linecast(float3 point, float3 direction, float3x3 triangle, out float t, out float3 intersection)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool linecast(float3 point, float3 direction, float3x3 triangle, out float t, out float3 intersection)
         {
             var mt = moller_trumbore(point, direction, triangle, out t);
             intersection = point + direction * t;
